@@ -1,0 +1,31 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('dashboard_menu_item', function (Blueprint $table) {
+            $table->id();
+            $table->string('ParentItemName')->nullable();
+            $table->string('ChildItemName')->default('');
+            $table->string('LogoName')->default('');
+            $table->boolean('hasChildren')->default(false);
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('dashboard_menu_item');
+    }
+};

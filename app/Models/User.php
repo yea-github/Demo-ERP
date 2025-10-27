@@ -58,4 +58,21 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /*
+
+    public function dashboard_main_menu_items() {
+        return $this->hasMany(DashboardParentMenuItem::class);
+    }
+
+    */
+
+    public function books(){
+        return $this->hasMany(Book::class);
+    }
+
+    public function dashboard_menu_items(){
+        return $this->hasMany(DashboardMenuItem::class);
+    }
+
 }

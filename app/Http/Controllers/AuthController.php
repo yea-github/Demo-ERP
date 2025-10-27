@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Hash;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\User;
@@ -9,9 +10,12 @@ use App\Models\User;
 class AuthController extends Controller
 {
 
+
     public function _construct(){
         $this->middleware(['auth:api', ['except'=> ['login', 'register']]]);
     }
+
+
 
     public function register(Request $request){
 
@@ -25,9 +29,16 @@ class AuthController extends Controller
             return response()->json($validator->errors()->toJson(), 400);
         }
 
+        /*
         $user = User::create(array_merge(
             $validator->validated(),
             ['password'=> bcrypt($request->password)]
+        ));
+        */
+
+        $user = User::create(array_merge(
+            $validator->validated(),
+            ['password'=> Hash::make(value: $request->password)]
         ));
 
         return response()->json([
@@ -63,7 +74,12 @@ class AuthController extends Controller
         ]);
     }
 
-    public function profile(){
+    public function profile(Request $request){
+
+        // return $request->user() ?? "Unauthorized";
+
+        // return "Hello Profile";
+
         return response()->json(auth()->user());
     }
 

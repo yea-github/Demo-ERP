@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\DashboardMenuItemController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,13 +17,18 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::group(['middleware' => 'api', 'prefix' => 'auth'], function($router){
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
-    Route::get('/profile', [AuthController::class, 'profile']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:api')->group(function () {
+
+    Route::get('books', [BookController::class, 'index']);
+    Route::post('/books', [BookController::class, 'store']);
+    Route::put('books/{id}', [BookController::class, 'update']);
+    Route::delete('books/{id}', [BookController::class, 'destroy']);
+
+    Route::post('/save-dashboard-menu-item', [DashboardMenuItemController::class, 'store']);
+
+    // Route::post('/save-dashboard-menu-item', [DashboardMenuItemController::class, 'store']);
 });
